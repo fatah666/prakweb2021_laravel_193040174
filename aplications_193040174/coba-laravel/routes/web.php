@@ -1,6 +1,10 @@
 <?php
 
+use App\Http\Controllers\PostController;
+use App\Models\Post;
 use Illuminate\Support\Facades\Route;
+use App\Models\Category;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -28,56 +32,21 @@ Route::get('/about', function () {
     ]);
 });
 
+Route::get('/blog', [PostController::class, 'index']);
+//halaman single route
+Route::get('posts/{post:slug}', [PostController::class, 'show']);
 
-
-Route::get('/blog', function () {
-
-    $blog_posts = [
-        [
-            "title" => "post pertama",
-            "slug" => "judul-post-pertama",
-            "author" => "Ujang Fatah A.K",
-            "body" => "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima veritatis vitae excepturi ipsa odit ratione dolorum incidunt dolor amet sint maxime libero fugit quibusdam sed eum possimus nesciunt iure nostrum adipisci at cum, consectetur nam! Minus exercitationem eveniet placeat magnam dolores! Quos, cupiditate praesentium repellat blanditiis cum incidunt similique, tenetur, aliquid nihil odit doloremque sapiente consequatur quasi sed quo iure perspiciatis ad minima facilis non? Harum minima iste ea, nihil ipsa quibusdam possimus illo perspiciatis vitae aut eum architecto sunt."
-        ],
-        [
-            "title" => "post kedua",
-            "slug" => "judul-post-kedua",
-            "author" => "ngaju hataf",
-            "body" => "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima veritatis vitae excepturi ipsa odit ratione dolorum incidunt dolor amet sint maxime libero fugit quibusdam sed eum possimus nesciunt iure nostrum adipisci at cum, consectetur nam! Minus exercitationem eveniet placeat magnam dolores! Quos, cupiditate praesentium repellat blanditiis cum incidunt similique, tenetur, aliquid nihil odit doloremque sapiente consequatur quasi sed quo iure perspiciatis ad minima facilis non? Harum minima iste ea, nihil ipsa quibusdam possimus illo perspiciatis vitae aut eum architecto sunt, Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima veritatis vitae excepturi ipsa odit ratione dolorum incidunt dolor amet sint maxime libero fugit quibusdam sed eum possimus nesciunt iure nostrum adipisci at cum, consectetur nam! Minus exercitationem eveniet placeat magnam dolores! Quos, cupiditate praesentium repellat blanditiis cum incidunt similique, tenetur, aliquid nihil odit doloremque sapiente consequatur quasi sed quo iure perspiciatis ad minima facilis non? Harum minima iste ea, nihil ipsa quibusdam possimus illo perspiciatis vitae aut eum architecto sunt."
-        ]
-    ];
-
-    return view('posts', [
-        "title" => "posts",
-        "posts" => $blog_posts
+Route::get('/categories', function () {
+    return view('categories', [
+        'title' => 'Post categories',
+        'categories' => Category::all()
     ]);
 });
 
-//halaman singel route
-Route::get('posts/{slug}', function ($slug) {
-    $blog_posts = [
-        [
-            "title" => "post pertama",
-            "slug" => "judul-post-pertama",
-            "author" => "Ujang Fatah A.K",
-            "body" => "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima veritatis vitae excepturi ipsa odit ratione dolorum incidunt dolor amet sint maxime libero fugit quibusdam sed eum possimus nesciunt iure nostrum adipisci at cum, consectetur nam! Minus exercitationem eveniet placeat magnam dolores! Quos, cupiditate praesentium repellat blanditiis cum incidunt similique, tenetur, aliquid nihil odit doloremque sapiente consequatur quasi sed quo iure perspiciatis ad minima facilis non? Harum minima iste ea, nihil ipsa quibusdam possimus illo perspiciatis vitae aut eum architecto sunt."
-        ],
-        [
-            "title" => "post kedua",
-            "slug" => "judul-post-kedua",
-            "author" => "ngaju hataf",
-            "body" => "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima veritatis vitae excepturi ipsa odit ratione dolorum incidunt dolor amet sint maxime libero fugit quibusdam sed eum possimus nesciunt iure nostrum adipisci at cum, consectetur nam! Minus exercitationem eveniet placeat magnam dolores! Quos, cupiditate praesentium repellat blanditiis cum incidunt similique, tenetur, aliquid nihil odit doloremque sapiente consequatur quasi sed quo iure perspiciatis ad minima facilis non? Harum minima iste ea, nihil ipsa quibusdam possimus illo perspiciatis vitae aut eum architecto sunt, Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima veritatis vitae excepturi ipsa odit ratione dolorum incidunt dolor amet sint maxime libero fugit quibusdam sed eum possimus nesciunt iure nostrum adipisci at cum, consectetur nam! Minus exercitationem eveniet placeat magnam dolores! Quos, cupiditate praesentium repellat blanditiis cum incidunt similique, tenetur, aliquid nihil odit doloremque sapiente consequatur quasi sed quo iure perspiciatis ad minima facilis non? Harum minima iste ea, nihil ipsa quibusdam possimus illo perspiciatis vitae aut eum architecto sunt."
-        ]
-    ];
-    $new_post = [];
-    foreach ($blog_posts as $post) {
-        if ($post["slug"] === $slug) {
-            $new_post = $post;
-        }
-    }
-
-    return view('post', [
-        "title" => "Singelpost",
-        "post" => $new_post
+Route::get('/categories/{category:slug}', function (Category $category) {
+    return view('category', [
+        'title' => $category->nama,
+        'posts' => $category->posts,
+        'category' => $category->nama
     ]);
 });
