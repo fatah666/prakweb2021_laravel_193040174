@@ -20,13 +20,15 @@ use App\Models\User;
 
 Route::get('/', function () {
     return view('home', [
-        "title" => "home"
+        "title" => "home",
+        "active" => "home"
     ]);
 });
 
 Route::get('/about', function () {
     return view('about', [
         "title" => "about",
+        "active" => "about",
         "name" => "Ujang Fatah Abwabal Khoer",
         "email" => "193040174@mail.unpas.ac.id",
         "image" => "profile.jpg"
@@ -40,6 +42,7 @@ Route::get('posts/{post:slug}', [PostController::class, 'show']);
 Route::get('/categories', function () {
     return view('categories', [
         'title' => 'Post categories',
+        'active' => 'Post Categories',
         'categories' => Category::all()
     ]);
 });
@@ -47,6 +50,7 @@ Route::get('/categories', function () {
 Route::get('/categories/{category:slug}', function (Category $category) {
     return view('posts', [
         'title' => "Post By Category : $category->name",
+        'active' => 'categories',
         'posts' => $category->posts->load('category', 'author')
     ]);
 });
